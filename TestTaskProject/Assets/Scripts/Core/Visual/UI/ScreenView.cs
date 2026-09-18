@@ -4,7 +4,12 @@ public class ScreenView : MonoBehaviour
 {
     public string Id => _id;
 
-    [SerializeField] private string _id;
+    private string _id;
+
+    public void Configure(string id)
+    {
+        _id = id;
+    }
 
     public virtual ScreenController Construct(EventManager eventManager)
     {
