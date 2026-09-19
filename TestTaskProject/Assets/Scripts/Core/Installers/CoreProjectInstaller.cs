@@ -9,5 +9,7 @@ public class CoreProjectInstaller : MonoInstaller
     {
         Container.Bind<EventManager>().AsSingle();
         Container.Bind<UIController>().FromInstance(_uiController).AsSingle();
+        Container.BindInterfacesTo<SceneLoader>().AsSingle();
+        Container.BindInterfacesAndSelfTo<ScreenCatalog>().AsSingle();
     }
 }
