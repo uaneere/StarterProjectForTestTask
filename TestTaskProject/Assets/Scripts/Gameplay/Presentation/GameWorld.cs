@@ -180,26 +180,26 @@ namespace Gameplay.Presentation
             {
                 if (_hands.HeldItem is not Potion)
                 {
-                    ShowStatus("На стол можно поставить только готовое зелье");
+                    ShowStatus("На стол можно поставить только готовое зелье.");
                     return;
                 }
 
                 _tableItem = _hands.Remove();
                 RefreshTableView();
-                ShowStatus($"{_tableItem.Name} стоит на столе");
+                ShowStatus($"{_tableItem.Name} стоит на столе.");
                 return;
             }
 
             if (!_hands.IsEmpty)
             {
-                ShowStatus("Руки заняты");
+                ShowStatus("Руки заняты.");
                 return;
             }
 
             _hands.TryTake(_tableItem);
             _tableItem = null;
             RefreshTableView();
-            ShowStatus("Зелье взято со стола");
+            ShowStatus("Зелье взято со стола.");
         }
 
         private void RefreshTableView()
@@ -216,7 +216,7 @@ namespace Gameplay.Presentation
         {
             if (_hands.HeldItem is not Ingredient ingredient)
             {
-                ShowStatus("В руках нет ингредиента");
+                ShowStatus("В руках нет ингредиента.");
                 return;
             }
 
@@ -261,7 +261,7 @@ namespace Gameplay.Presentation
             _hands.Remove();
             _cauldron.AddIngredient(processed);
 
-            var reason = result == QteResult.Failed ? "провал, случайный эффект" : "успех";
+            var reason = result == QteResult.Failed ? "Провал! Случайный эффект." : "Успех!";
             ShowStatus($"{processed.Ingredient.Name} → {processed.Effect} ({reason})");
 
             _qte = null;
@@ -276,13 +276,13 @@ namespace Gameplay.Presentation
 
             if (_cauldron.Contents.Count == 0)
             {
-                ShowStatus("Котёл пуст");
+                ShowStatus("Котёл пуст.");
                 return;
             }
 
             if (!_hands.IsEmpty)
             {
-                ShowStatus("Освободите руки, чтобы взять зелье");
+                ShowStatus("Освободите руки, чтобы взять зелье.");
                 return;
             }
 
@@ -296,7 +296,7 @@ namespace Gameplay.Presentation
             _health.Damage();
             ShowStatus(_health.IsDead
                 ? "Зелье взорвалось. Маг падает"
-                : "Неверная последовательность — взрыв! -1 сердце");
+                : "Неверная последовательность — взрыв! -1 сердце.");
         }
 
         private void OnCabinetSlotClicked(CabinetSlotClickedEvent slotEvent)
@@ -416,22 +416,22 @@ namespace Gameplay.Presentation
 
             CreateInvisibleWall("WallTop", new Vector2(0f, 5.4f), new Vector2(18f, 5f));
             CreateInvisibleWall("WallBottom", new Vector2(0f, -5.4f), new Vector2(18f, 4.5f));
-            CreateInvisibleWall("WallLeft", new Vector2(-9.2f, 0f), new Vector2(6f, 11f));
-            CreateInvisibleWall("WallRight", new Vector2(9.2f, 0f), new Vector2(6f, 11f));
+            CreateInvisibleWall("WallLeft", new Vector2(-9.2f, 0f), new Vector2(7f, 11f));
+            CreateInvisibleWall("WallRight", new Vector2(9.2f, 0f), new Vector2(7f, 11f));
 
-            var chest = CreateProp("Chest", new Vector3(0f, 3.6f, 0f), VisualCatalog.Chest, 2.2f, 2, true, true);
+            var chest = CreateProp("Chest", new Vector3(2f, 2f, 0f), VisualCatalog.Chest, 2.2f, 2, true, true);
             chest.AddComponent<Interactable>().Type = InteractableType.Cabinet;
             _cabinetPoint = chest.transform;
 
-            var cauldron = CreateProp("Cauldron", new Vector3(6.1f, 0.1f, 0f), VisualCatalog.Cauldron, 2.4f, 2, true, true);
+            var cauldron = CreateProp("Cauldron", new Vector3(5f, -2f, 0f), VisualCatalog.Cauldron, 2.4f, 10, true, true);
             cauldron.AddComponent<Interactable>().Type = InteractableType.Cauldron;
             var burn = cauldron.AddComponent<SpriteAnimator>();
             burn.SetFrames(VisualCatalog.CauldronBurnFrames, 0.7f);
             _cauldronPoint = cauldron.transform;
 
-            CreateProp("Bed", new Vector3(-6.1f, 0.2f, 0f), VisualCatalog.Bed, 2.6f, 2, true, true);
+            CreateProp("Bed", new Vector3(-5f, 1f, 0f), VisualCatalog.Bed, 3f, 2, true, true);
 
-            var table = CreateProp("Table", new Vector3(0f, -3.5f, 0f), VisualCatalog.Table, 2.1f, 2, true, true);
+            var table = CreateProp("Table", new Vector3(-3f, -2.2f, 0f), VisualCatalog.Table, 1.8f, 10, true, true);
             table.AddComponent<Interactable>().Type = InteractableType.Table;
             _tablePoint = table.transform;
             var itemView = new GameObject("TableItem");

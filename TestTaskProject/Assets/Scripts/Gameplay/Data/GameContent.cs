@@ -57,7 +57,7 @@ namespace Gameplay.Data
             foreach (var pair in stacked)
                 result.Add($"{pair.Key} {pair.Value}");
 
-            return "Рецепт: " + string.Join(" → ", parts) + "\nРезультат: " + string.Join(", ", result);
+            return "Рецепт:\n" + string.Join("\n", parts) + "\nРезультат: " + string.Join(", ", result);
         }
 
         public Item[] CreateCabinetStock()

@@ -39,6 +39,8 @@ namespace Gameplay.Presentation
             _font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             if (_font == null)
                 _font = Font.CreateDynamicFontFromOSFont("Arial", 32);
+            if (_font == null)
+                _font = Font.CreateDynamicFontFromOSFont("Liberation Sans", 32);
 
             if (FindFirstObjectByType<EventSystem>() == null)
             {
@@ -60,11 +62,11 @@ namespace Gameplay.Presentation
             scaler.dynamicPixelsPerUnit = 4f;
             _raycaster = canvasObject.AddComponent<GraphicRaycaster>();
 
-            _hearts = CreateLabel(canvasObject.transform, "Hearts", new Vector2(20, -16), 50, TextAnchor.UpperLeft);
-            _heldItem = CreateLabel(canvasObject.transform, "Held", new Vector2(20, -48), 30, TextAnchor.UpperLeft);
-            _recipe = CreateLabel(canvasObject.transform, "Recipe", new Vector2(20, -80), 30, TextAnchor.UpperLeft);
-            _cauldron = CreateLabel(canvasObject.transform, "Cauldron", new Vector2(20, -140), 30, TextAnchor.UpperLeft);
-            _hint = CreateLabel(canvasObject.transform, "Hint", new Vector2(0, 18), 20, TextAnchor.LowerCenter);
+            _hearts = CreateLabel(canvasObject.transform, "Hearts", new Vector2(50, 0), 100, TextAnchor.UpperLeft);
+            _heldItem = CreateLabel(canvasObject.transform, "Held", new Vector2(100, -1040), 30, TextAnchor.UpperLeft);
+            _recipe = CreateLabel(canvasObject.transform, "Recipe", new Vector2(300, -20), 30, TextAnchor.UpperLeft);
+            _cauldron = CreateLabel(canvasObject.transform, "Cauldron", new Vector2(1500, -20), 30, TextAnchor.UpperLeft);
+            _hint = CreateLabel(canvasObject.transform, "Hint", new Vector2(0, 7), 30, TextAnchor.LowerCenter);
             _hint.rectTransform.anchorMin = new Vector2(0.5f, 0f);
             _hint.rectTransform.anchorMax = new Vector2(0.5f, 0f);
             _hint.rectTransform.pivot = new Vector2(0.5f, 0f);
@@ -100,27 +102,27 @@ namespace Gameplay.Presentation
             bool cabinetOpen,
             bool qteActive)
         {
-            _hearts.text = "Сердца: " + new string('♥', health.Hearts) + new string('♡', PlayerHealth.MaxHearts - health.Hearts);
-            _heldItem.text = "В руках: " + FormatItem(hands.HeldItem);
+            _hearts.text = new string('♥', health.Hearts) + new string('♡', PlayerHealth.MaxHearts - health.Hearts);
+            _heldItem.text = "В руках: " + FormatItem(hands.HeldItem) + ".";
             _cauldron.text = FormatCauldron(cauldron);
             _finishButton.SetActive(nearby == InteractableType.Cauldron && !cabinetOpen && !qteActive && cauldron.Contents.Count > 0);
 
             if (health.IsDead)
-                _hint.text = "Маг без сил. R — начать заново";
+                _hint.text = "Маг без сил. Нажмите на  R, чтобы начать заново.";
             else if (qteActive)
-                _hint.text = "Введите одну из двух последовательностей. WASD или стрелки. Esc — отмена";
+                _hint.text = "Введите одну из двух последовательностей. Для ввода используйте клавиши WASD или стрелки. Esc - отмена.";
             else if (cabinetOpen)
-                _hint.text = "ЛКМ — взять или положить предмет. Esc — закрыть сундук";
+                _hint.text = "ЛКМ - взять или положить предмет. Esc - закрыть сундук.";
             else if (nearby == InteractableType.Cabinet)
-                _hint.text = "E — открыть сундук";
+                _hint.text = "E - открыть сундук.";
             else if (nearby == InteractableType.Cauldron)
                 _hint.text = hands.HeldItem is Ingredient
-                    ? "E — обработать ингредиент. F — завершить зелье"
-                    : "F — завершить зелье";
+                    ? "E - обработать ингредиент. F - завершить зелье."
+                    : "F - завершить зелье.";
             else if (nearby == InteractableType.Table)
-                _hint.text = "E — поставить или взять зелье со стола";
+                _hint.text = "E - поставить или взять зелье со стола.";
             else
-                _hint.text = "WASD / стрелки — ходьба. Esc — пауза";
+                _hint.text = "WASD / стрелки - ходьба. Esc - пауза.";
         }
 
         public void SetWorldUiInteractable(bool interactable)
@@ -174,7 +176,7 @@ namespace Gameplay.Presentation
             _qteTitle.text = $"{ingredient.Name}: 1) {ingredient.Effect1}    2) {ingredient.Effect2}";
             FillPath(_qtePath1, session.Path1, session.Index1, session.Path1Alive);
             FillPath(_qtePath2, session.Path2, session.Index2, session.Path2Alive);
-            _qteTimer.text = $"Время: {Mathf.CeilToInt(session.RemainingTime)}";
+            _qteTimer.text = $"Время: {Mathf.CeilToInt(session.RemainingTime)}.";
         }
 
         private void BuildCabinet(Transform parent)
@@ -186,11 +188,11 @@ namespace Gameplay.Presentation
             background.preserveAspect = false;
             var panelRect = _cabinetPanel.GetComponent<RectTransform>();
             panelRect.anchorMin = panelRect.anchorMax = panelRect.pivot = new Vector2(0.5f, 0.5f);
-            panelRect.sizeDelta = new Vector2(1100, 680);
+            panelRect.sizeDelta = new Vector2(1400, 860);
 
             _cabinetIcons = new Image[Cabinet.SlotCount];
-            const float cell = 88f;
-            const float gap = 10f;
+            const float cell = 120f;
+            const float gap = 14f;
             var gridWidth = Cabinet.Columns * cell + (Cabinet.Columns - 1) * gap;
             var gridHeight = Cabinet.Rows * cell + (Cabinet.Rows - 1) * gap;
             var originX = -gridWidth / 2f + cell / 2f;
@@ -216,14 +218,17 @@ namespace Gameplay.Presentation
                 icon.preserveAspect = true;
                 icon.raycastTarget = false;
                 var iconRect = icon.rectTransform;
-                iconRect.anchorMin = new Vector2(0.12f, 0.28f);
-                iconRect.anchorMax = new Vector2(0.88f, 0.92f);
-                iconRect.offsetMin = iconRect.offsetMax = Vector2.zero;
+                iconRect.anchorMin = new Vector2(0.05f, 0.1f);
+                iconRect.anchorMax = new Vector2(0.95f, 0.95f);
+                iconRect.pivot = new Vector2(0.5f, 0.5f);
+                iconRect.anchoredPosition = Vector2.zero;
+                iconRect.sizeDelta = Vector2.zero;
                 _cabinetIcons[i] = icon;
 
                 var text = button.GetComponentInChildren<Text>();
-                text.fontSize = 11;
+                text.fontSize = 16;
                 text.alignment = TextAnchor.LowerCenter;
+                text.transform.SetAsLastSibling();
             }
 
             _cabinetPanel.SetActive(false);
@@ -388,7 +393,7 @@ namespace Gameplay.Presentation
             text.text = label;
             text.alignment = TextAnchor.LowerCenter;
             text.color = Color.white;
-            text.fontSize = 16;
+            text.fontSize = 20;
             text.raycastTarget = false;
             var textRect = text.rectTransform;
             textRect.anchorMin = Vector2.zero;
@@ -416,7 +421,7 @@ namespace Gameplay.Presentation
         private static string FormatCauldron(Cauldron cauldron)
         {
             if (cauldron.Contents.Count == 0)
-                return "Котёл: пуст";
+                return "Котёл пуст.";
 
             var parts = new string[cauldron.Contents.Count];
             for (var i = 0; i < cauldron.Contents.Count; i++)

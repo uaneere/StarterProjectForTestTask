@@ -20,12 +20,12 @@ public class MenuScreenView : ScreenView
         PlayButton = UiWidgetFactory.CreateImageButton(transform, "Start", VisualCatalog.StartButton, new Vector2(360, 110));
         var playRect = PlayButton.GetComponent<RectTransform>();
         playRect.anchorMin = playRect.anchorMax = playRect.pivot = new Vector2(0.5f, 0.5f);
-        playRect.anchoredPosition = new Vector2(0f, 40f);
+        playRect.anchoredPosition = new Vector2(0f, -90f);
 
         QuitButton = UiWidgetFactory.CreateImageButton(transform, "Exit", VisualCatalog.ExitButton, new Vector2(360, 110));
         var quitRect = QuitButton.GetComponent<RectTransform>();
         quitRect.anchorMin = quitRect.anchorMax = quitRect.pivot = new Vector2(0.5f, 0.5f);
-        quitRect.anchoredPosition = new Vector2(0f, -90f);
+        quitRect.anchoredPosition = new Vector2(0f, -220f);
     }
 
     public override ScreenController Construct(EventManager eventManager)

@@ -34,7 +34,7 @@ public class PauseScreenView : ScreenView
         ResumeButton = UiWidgetFactory.CreateImageButton(panel.transform, "Close", VisualCatalog.CloseButton, new Vector2(72, 72));
         var closeRect = ResumeButton.GetComponent<RectTransform>();
         closeRect.anchorMin = closeRect.anchorMax = closeRect.pivot = new Vector2(1f, 1f);
-        closeRect.anchoredPosition = new Vector2(-18f, -18f);
+        closeRect.anchoredPosition = new Vector2(-18f, -46f);
     }
 
     public override ScreenController Construct(EventManager eventManager)
