@@ -439,7 +439,7 @@ namespace Gameplay.Presentation
             itemView.transform.localPosition = new Vector3(0f, 0.35f, 0f);
             itemView.transform.localScale = Vector3.one * 0.45f;
             _tableItemView = itemView.AddComponent<SpriteRenderer>();
-            _tableItemView.sortingOrder = 3;
+            _tableItemView.sortingOrder = 11;
             _tableItemView.enabled = false;
 
             var mage = CreateProp("Mage", Vector3.zero, SpriteLoader.Load("MCstand", new Color(0.45f, 0.35f, 0.72f)), 1.7f, 8, true, false);
